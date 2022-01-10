@@ -1,0 +1,586 @@
+---
+title: "Exploring trends and variation in narcolepsy treatments"
+# description: "Secondary Care Medicines Data"
+date: "`r lubridate::today()`"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_depth: 3
+    toc_float: true
+navbar:
+  search: true
+bibliography: "references.bib"
+link-citations: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r rmd-setup, include=FALSE}
+# R Markdown settings
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r setup, include=FALSE}
+# Load utils for this project
+source(here::here("scripts/connect_bigquery.R"))
+source(here::here("scripts/sql_query_dmd.R"))
+source(here::here("scripts/sql_query_scmd.R"))
+source(here::here("scripts/create_tables.R"))
+# DBI::dbListTables(conn_ebm_scmd)
+# Load R packages
+library(tidyverse)
+library(readr)
+library(bigrquery)
+library(DBI)
+library(here)
+library(reactable)
+library(htmltools)
+library(plotly)
+library(dplyr)
+library(dbplyr)
+library(sparkline)
+library(tsibble)
+library(lubridate)
+library(tippy)
+```
+
+# Background
+
+Our team delivers [OpenPrescribing.net](https://openprescribing.net/), a publicly funded and openly accessible explorer for NHS primary care prescribing supported by prescribing data openly published by the NHS Business Services Authority. 
+
+We were concerned that the NHS did not share hospital medicines data in a similar manner to primary care and that it should be shared [see @Goldacre2020]. 
+
+In September 2020 NHS BSA published hospital medicines data for the first time. 
+We have prepared the following notebook for investigating the use of narcolepsy treatments in English hospitals. 
+
+If you have any feedback or insight The DataLab team can be contacted at ebmdatalab@phc.ox.ac.uk.
+
+# Methods
+
+## Medicines codelist
+
+The file `data/narcolepsy_meds.csv` contains the SNOMED codes for the medicines we are investigating, see Table below with raw data.
+More information about each SNOMED code included in this analysis is shown in the methods section below (see dm+d Table).
+See the document `codelists/create-codelists.Rmd` for more information about how the codelist was created.
+
+```{r}
+# Define vector with selected SNOMED codes for narcolepsy Treatments
+codelist <- read_csv(here("data/narcolepsy-meds.csv"),
+                    # convert to strings (they are stored as strings in SCMD table)
+                    col_types = cols(id = col_character()))
+
+# changed col type in read_csv function above 
+codes <- codelist$id
+```
+
+```{r}
+codelist %>% 
+  reactable(filterable = TRUE,
+            columns = list(
+              type = reactable::colDef(minWidth = 40),
+              id = reactable::colDef(minWidth = 100),
+              bnf_code = reactable::colDef(minWidth = 100),
+              nm = reactable::colDef(minWidth = 200),
+              ingredient = reactable::colDef(minWidth = 100),
+              ddd = reactable::colDef(minWidth = 30)
+            ),
+            style = list(fontSize = "12px"),
+            highlight = TRUE
+)
+```
+
+
+## Data
+
+Before we can analyse trends and variation we need to prepare our dataset. 
+This analysis uses three different sources of data.
+The file `scipts/get_data.R` describes the pre-processing of the "NHS Trusts" data (see below)
+
+### NHS Trusts
+
+- The NHS Digital "GP mapping file" which provides STP and region names mapped to STP and region ODS codes, published [here](https://digital.nhs.uk/data-and-information/publications/statistical/patients-registered-at-a-gp-practice/september-2020).
+
+- The NHS Digital "Etr" file that maps trust organisation codes to trust names, STP ODS codes and region ODS codes, published [here](https://digital.nhs.uk/services/organisation-data-service/data-downloads/other-nhs-organisations).
+
+```{r, cache=TRUE}
+# Load ETR data
+df_etr <- readr::read_csv(here::here("data/etr_tidy.csv")) %>%
+  select(c("ods_code", "ods_name", "region_code", "stp_code"))
+
+# load older ETR data and find any additional codes here not in current list
+df_etr_historic <- readr::read_csv(here::here("data/etr.csv"), 
+                                   col_names = FALSE) %>%
+  select(1:4) 
+
+colnames(df_etr_historic) <- c("ods_code", "ods_name", "region_code", "stp_code")
+ 
+df_etr_intersect <- intersect(df_etr$ods_code, df_etr_historic$ods_code)
+
+df_etr_historic <- df_etr_historic %>% 
+  dplyr::filter(!ods_code %in% df_etr_intersect)
+
+df_etr <- rbind(df_etr, df_etr_historic)
+# Load stp to regions data
+stp_to_region_map <- read_csv(here::here("data/gp-reg-pat-prac-map.csv")) %>%
+  group_by(STP_CODE, STP_NAME) %>%
+  summarise(COMM_REGION_NAME = first(COMM_REGION_NAME),
+            COMM_REGION_CODE = first(COMM_REGION_CODE)) %>%
+  janitor::clean_names()
+
+# check which STPs are in lookup table
+stp_count <- df_etr %>% 
+  group_by(stp_code) %>%
+  summarise(n = n(),
+            ods_code = first(ods_code),
+            ods_name = first(ods_name))
+
+stp_count <- left_join(stp_count, 
+                       stp_to_region_map, 
+                       by = "stp_code")
+```
+
+```{r tab-etr, cache=TRUE}
+# Sustainability and Transformation Partnerships (STPs) 
+df_etr %>% 
+  left_join(stp_to_region_map, by = "stp_code") %>% 
+  select(ods_name, stp_name, comm_region_name) %>% 
+  mutate(stp_name = fct_explicit_na(stp_name),
+         comm_region_name = fct_explicit_na(comm_region_name)) %>%
+  reactable::reactable(filterable = TRUE,
+                       columns = list(ods_name = reactable::colDef(name = "Name", 
+                                                                   minWidth = 200),
+                                      stp_name = reactable::colDef(name = "STP", 
+                                                                   minWidth = 150),
+                                      comm_region_name = reactable::colDef(name = "Region", 
+                                                                           minWidth = 70)),
+                       style = list(fontSize = "12px"),
+                       highlight = TRUE)
+```
+
+### SCMD
+
+- The Secondary Care Medicines Dataset (SCMD) published by the NHS BSA, see [here](https://opendata.nhsbsa.net/dataset/d5d7cd63-5373-4a0e-ae22-7f1a198e305d).
+- The following SQL code is used to get the data from our Google Bigquery database
+- The data needed for this notebook is available as a csv at: `data/df_scmd_narcolepsy.csv`
+
+```{r code = readLines(here('scripts/sql_query_scmd.R')), class.source = 'fold-show'}
+
+```
+
+```{r, cache=TRUE}
+# Secondary Care Medicines Data
+# Connect to database, filter, and collect data.
+# Get SCMD dataset
+# db_scmd <- dplyr::tbl(conn_ebm_scmd, sql_query_scmd)
+# Create dataframe for table
+# df_scmd <- db_scmd %>%
+#   dplyr::filter(vmp_snomed_code %in% codes) %>%
+#   dplyr::collect()
+# # Write csv file
+# write_csv(df_scmd, here("data/df_scmd_narcolepsy.csv"))
+
+# Read csv created above using bigquery database
+df_scmd <- read_csv(here("data/df_scmd_narcolepsy.csv"),
+                    col_types = cols(vmp_snomed_code = col_character()))
+```
+
+- The current data includes SCMD data from `r min(df_scmd$year_month)` to `r max(df_scmd$year_month)`
+
+
+```{r, cache=TRUE}
+# Tidy tidy tidy data
+df_scmd_names <- df_scmd %>% 
+  dplyr::left_join(dplyr::select(df_etr, ods_code, ods_name, stp_code), by = "ods_code") %>% 
+  # some data cleaning as scmd uses some ods codes that are not up to date
+  mutate(stp_code = as.character(stp_code),
+         stp_code = case_when(
+           ods_code == "RQ6" ~ "QYG", # cheshire + merseyside
+           ods_code %in% c("RNL", "RE9", "RLN") ~ "QHM", # cumbria
+           ods_code %in% c("RM2", "RW3") ~ "QOP", # Mcr
+           ods_code == "RGQ" ~ "QJG", # Suffolk and North East Essex
+           ods_code == "RJF" ~ "QJ2", # Derbyshire
+           ods_code == "RR1" ~ "QHL", # Birmingham
+           ods_code == "R1J" ~ "QR1", # gloucestershire (trust present in data but wrong/old code)
+           ods_code == "R1E" ~ "QNC", # Staffs
+           ods_code == "TAD" ~ "QWO", # W Yorks
+           ods_code == "TAJ" ~ "QUA", # Black country
+           TRUE ~ stp_code)
+         )
+check_missing <- select(df_scmd_names,c("ods_code", "ods_name", "stp_code")) %>%
+  distinct(.keep_all = TRUE)
+
+check_missing <- check_missing[order(check_missing[["ods_name"]]), ]
+
+# check which STPs are in data
+scmd_stp_count <- df_scmd_names %>% 
+  group_by(stp_code) %>%
+  summarise(n = n(),
+            ods_code = first(ods_code),
+            ods_name = first(ods_name))
+```
+
+
+```{r cache=TRUE}
+# Fill explicit missing and create dataset for sparkline in table
+df_tab_sparkline <- df_scmd_names %>% 
+  select(-c(vmp_product_name, ods_name, stp_code, stp_code, ods_name)) %>% 
+  arrange(ods_code, vmp_snomed_code, year_month) %>% 
+  as_tsibble(key = c(ods_code, vmp_snomed_code), index = year_month) %>% 
+  fill_gaps(total_quantity = 0, .full = TRUE) %>% 
+  tidyr::fill(.direction = "down") %>% 
+  as_tibble() %>% 
+  mutate(year_month = floor_date(year_month, unit = "month")) %>% 
+  group_by(year_month, ods_code, vmp_snomed_code) %>% 
+  arrange(ods_code, vmp_snomed_code, year_month) %>% 
+  mutate(total_quantity = sum(total_quantity)) %>%
+  arrange(ods_code, vmp_snomed_code, year_month) %>% 
+  distinct() %>% 
+  group_by(ods_code, vmp_snomed_code) %>%
+  dplyr::summarise(count_sparkline = list(total_quantity)) %>% 
+  group_by(ods_code, vmp_snomed_code) %>% 
+  dplyr::mutate(total_quantity = sum(unlist(count_sparkline)))
+
+# Create lookup datasets for joining
+# SNOMED
+vmp_snomed_names_lookup <- df_scmd_names %>% 
+  select(vmp_snomed_code, vmp_product_name) %>% 
+  dplyr::distinct()
+
+# Trust
+trust_names_lookup <- df_scmd_names %>% 
+  select(ods_code, ods_name, stp_code) %>% 
+  dplyr::distinct()
+
+# Join data
+df_tab_sparkline <- df_tab_sparkline %>%
+  ungroup() %>% 
+  arrange(ods_code) %>% 
+  left_join(trust_names_lookup, by = c("ods_code")) %>% 
+  left_join(vmp_snomed_names_lookup, by = c("vmp_snomed_code")) %>% 
+  mutate(count_box = count_sparkline)
+
+# See the ?tippy documentation to learn how to customize tooltips
+with_tooltip <- function(value, tooltip, ...) {
+  div(style = "text-decoration: underline; text-decoration-style: dotted; cursor: help",
+      tippy(value, tooltip, ...))
+}
+
+# Create table
+df_tab_sparkline %>% 
+  select(ods_name, vmp_product_name,vmp_snomed_code, count_sparkline, count_box, total_quantity, 
+         -ods_code, -stp_code) %>% 
+  reactable(filterable = TRUE,
+            defaultSorted = c("ods_name", "total_quantity"),
+            groupBy = c("ods_name"),
+            columns = list(
+              ods_name = reactable::colDef(name = "Trust", 
+                                           minWidth = 200),
+              count_sparkline = colDef(name = "Trend",
+                                       header = with_tooltip("Trend", 
+                                                             "Note that the y axis cannot be compared across different entries."),
+                                       minWidth = 50,
+                                       cell = function(value, index) {
+                                         sparkline(df_tab_sparkline$count_sparkline[[index]])
+                                       }),
+              count_box = reactable::colDef(show = FALSE),
+              total_quantity = reactable::colDef(name = "Quantity",
+                                                 minWidth = 50,
+                                                 aggregate = "sum",
+                                                 format = reactable::colFormat(digits = 0)),
+              vmp_product_name = reactable::colDef(name = "Product", 
+                                                   minWidth = 150,
+                                                   cell = function(value, index) {
+                                                     vmp_snomed_code <- paste0("SNOMED: ", df_tab_sparkline$vmp_snomed_code[index])
+                                                     vmp_snomed_code <- if (!is.na(vmp_snomed_code)) vmp_snomed_code else "Unknown"
+                                                     div(
+                                                       div(style = list(fontWeight = 600), value),
+                                                       div(style = list(fontSize = 10), vmp_snomed_code))
+                                                   }
+              ),
+              vmp_snomed_code = reactable::colDef(show = FALSE)
+            ),
+            style = list(fontSize = "12px"),
+            highlight = TRUE
+)
+```
+
+### dm+d
+
+- Information from the dm+d (Dictionary of Medicines and Devices) on the strength and vmp quantity of each medicine at VMP level, using data hosted on the DataLab BigQuery server
+- The following SQL code is used to get the data from our Google Bigquery database
+- The data needed for this notebook is available as a csv at: `data/df_dmd_info.csv`
+
+```{r code = readLines(here('scripts/sql_query_dmd.R')), class.source = 'fold-show'}
+
+```
+
+```{r, cache=TRUE}
+# Uncomment to get data from bigquery and write csv
+# db_dmd_info <- dplyr::tbl(conn_ebm_scmd, sql_query_dmd_info)
+# 
+# df_dmd_info <- db_dmd_info %>%
+#   filter(vmp_snomed_code %in% codes) %>%
+#   collect()
+# 
+# write_csv(df_dmd_info, here("data/df_dmd_info.csv"))
+
+# Read the csv file 
+df_dmd_info <- read_csv(here("data/df_dmd_info.csv"),
+                        col_types = cols(vmp_snomed_code = col_character()))
+
+```
+
+We use information on the daily defined dose (DDD) of each medicine, so that the volume of each VMP can be compared directly once converted to DDDs. 
+The WHO publish DDDs online.
+
+```{r}
+# Define tibble with mg_per_ddd for join later
+ddds <- select(codelist, c('nm', 'ddd')) %>% 
+  drop_na('ddd')
+
+# get additional DDDs sourced elsewhere
+df_scmd_mg <- df_scmd_names %>% 
+  left_join(df_dmd_info, by = c("vmp_snomed_code", "vmp_product_name")) %>% 
+  left_join(ddds, by = c("vmp_product_name" = "nm"))  
+```
+
+```{r}
+df_scmd_mg %>% 
+  select(vmp_snomed_code, vtmnm, form_descr, udfs, udfs_descr,
+         strnt_nmrtr_val, strnt_nmrtr_uom, strnt_dnmtr_val,strnt_dnmtr_descr, 
+         ddd) %>% 
+  distinct() %>% 
+    reactable(filterable = TRUE,
+              columns = list(
+                vmp_snomed_code = reactable::colDef(name = "SNOMED", 
+                                                    minWidth = 100),
+                vtmnm = reactable::colDef(name = "Name", 
+                                          minWidth = 100),
+                form_descr = reactable::colDef(name = "Form", 
+                                               minWidth = 80),
+                # udfs is the VMP unit dose form strength
+                udfs = reactable::colDef(name = "Value", 
+                                         minWidth = 40),
+                udfs_descr = reactable::colDef(name = "Unit", 
+                                               minWidth = 40),
+                # strnt_nmrtr
+                strnt_nmrtr_val = reactable::colDef(name = "Numerator", 
+                                                    minWidth = 60,
+                                                    format = colFormat(suffix = " mg")),
+                strnt_nmrtr_uom = reactable::colDef(show = FALSE),
+                # strnt_dnmtr
+                strnt_dnmtr_val = reactable::colDef(name = "Denominator", 
+                                                    minWidth = 60,
+                                                    format = colFormat(suffix = " ml")),
+                strnt_dnmtr_descr = reactable::colDef(show = FALSE),
+                ddd = reactable::colDef(name = "mg/ddd", 
+                                               minWidth = 50)),
+              columnGroups = list(
+                colGroup(name = "UDFS", columns = c("udfs", "udfs_descr")),
+                colGroup(name = "Strength", columns = c("strnt_nmrtr_val", "strnt_dnmtr_val"))
+              ),
+              style = list(fontSize = "12px"),
+              highlight = TRUE)
+```
+
+## Convert volume
+
+The final data cleaning step is to convert the volume from VMP quantity (as provided in the SCMD dataset) to volume in DDDs.
+
+- SCMD volumes data is provided in vmp quantity - this means different things for different products. e.g. 100mg powder = 1 vmp quantity but 100mg/20ml solution for injection = 20 vmp quantity, even though both VMPS have the same strength of ingredient.
+- To translate volume in VMP quantity to volume in DDDs we need to go through a few steps:
+  - First, translate volume in VMP quantity to volumes in singles of the product (i.e. number of vials)
+  - Then translate volume in singles of product to volume in strength of ingredient (i.e. number of mgs of active ingredient)
+  - Finally translate volume in strength of ingredient to volume in DDDs, using the DDD information published by the WHO
+
+```{r}
+df_scmd_ddd <- df_scmd_mg %>% 
+  mutate(volume_singles = total_quantity / udfs,
+         volume_mg_strength = volume_singles * if_else(is.na(strnt_dnmtr_val), 
+                                                       true = strnt_nmrtr_val, 
+                                                       false = strnt_nmrtr_val * 
+                                                               (udfs / strnt_dnmtr_val)),
+         volume_ddd = volume_mg_strength / ddd)
+```
+
+# Results
+
+## Trends over time
+
+### National prescribing
+
+```{r, fig.width=7.2, fig.height=3, cache=TRUE, fig.cap="Figure. National prescribing of narcolepsy treatments over time."}
+temp_ggplot <- df_scmd_ddd %>%
+  group_by(year_month, vtmnm) %>%
+  summarise(volume_ddd = sum(volume_ddd)) %>% 
+  ggplot(aes(x = year_month, 
+             y = volume_ddd, 
+             colour = vtmnm, 
+             group = vtmnm)) +
+  geom_line(size = 1, alpha = 0.5) +
+  geom_point(aes(text = paste0("<b>Month:</b> ", 
+                               lubridate::month(year_month, label = TRUE), " ",
+                               lubridate::year(year_month), "<br>",
+                               "<b>Volume:</b> ", round(volume_ddd, 0), "<br>",
+                               "<b>Medication:</b> ", vtmnm)), size = 2) +
+  scale_x_date(date_breaks = "4 month", date_labels =  "%b %y") +  
+  scale_colour_viridis_d() +
+  labs(x = NULL, y = "Defined Daily Dose",
+       colour = NULL) +
+  geom_vline(xintercept = as.numeric(as.Date("2020-03-31")), 
+             color = "orange", 
+             linetype = 2,
+             lwd = .5, 
+             alpha = .5) +
+  theme(text = element_text(size = 12))
+
+# temp_ggplot
+plotly::ggplotly(temp_ggplot,
+                 tooltip = "text") %>%
+  plotly::config(displayModeBar = FALSE)
+```
+
+### Regional prescribing
+
+```{r}
+df_scmd_ddd_map <- df_scmd_ddd %>% 
+  left_join(stp_to_region_map, by = "stp_code")
+```
+
+```{r, fig.width=8, fig.height=8, fig.cap="Figure. Regional prescribing of narcolepsy treatments over time."}
+temp_ggplot <- df_scmd_ddd_map %>%
+  group_by(comm_region_name, year_month, vtmnm) %>%
+  summarise(volume_ddd = sum(volume_ddd)) %>% 
+  mutate(comm_region_name = fct_explicit_na(comm_region_name)) %>% 
+  ggplot(aes(x = year_month, y = volume_ddd, 
+             colour = comm_region_name, group = comm_region_name)) +
+  geom_vline(xintercept = as.numeric(as.Date("2020-03-31")), 
+             color = "orange", 
+             linetype = 2,
+             lwd = .5, 
+             alpha = .5) +
+  geom_line(size = 1, alpha = 0.5) +
+  geom_point(aes(text = paste0("<b>Month:</b> ", 
+                               lubridate::month(year_month, label = TRUE), " ",
+                               lubridate::year(year_month), "<br>",
+                               "<b>Region:</b> ", comm_region_name, "<br>",
+                               "<b>Volume:</b> ", round(volume_ddd, 0), "<br>",
+                               "<b>Medication:</b> ", vtmnm)), 
+             size = 2) +
+  scale_x_date(date_breaks = "4 month", date_labels =  "%b %y") +
+  scale_colour_viridis_d(end = 1) +
+  labs(x = NULL, 
+       y = "Defined Daily Dose",
+       colour = NULL) +
+  facet_wrap(~vtmnm, ncol = 1) +
+  theme(text = element_text(size = 12)) 
+  
+# temp_ggplot
+plotly::ggplotly(temp_ggplot,
+                 tooltip = "text") %>%
+  plotly::config(displayModeBar = FALSE)
+```
+
+## Total volume per year
+
+### Regional prescribing
+
+```{r fig.width=8, fig.height=4, fig.cap="Figure. Total regional prescribing of narcolepsy treatments."}
+temp_ggplot <- df_scmd_ddd_map %>% 
+  select(year_month, ods_code, vtmnm, volume_ddd, comm_region_name) %>% 
+  mutate(comm_region_name = fct_explicit_na(comm_region_name)) %>% 
+  group_by(comm_region_name, vtmnm) %>%
+  summarise(volume_ddd = sum(volume_ddd)) %>%
+  group_by(comm_region_name) %>%
+  mutate(prop_use = volume_ddd / sum(volume_ddd, na.rm = TRUE),
+         pos = cumsum(volume_ddd) - volume_ddd/2,
+         total = sum(volume_ddd), na.rm = TRUE) %>%
+  ungroup() %>% 
+  mutate(comm_region_name = fct_reorder(comm_region_name, total)) %>% 
+  ggplot(aes(comm_region_name)) +
+  geom_bar(aes(y = volume_ddd,
+               fill = vtmnm,
+               text = paste0("<b>Region:</b> ", comm_region_name, "<br>",
+                             "<b>Total volume in ddd:</b> ", round(total, 0), "<br>",
+                             # "<b>Medication:</b> ", vtmnm, "<br>",
+                             "<b>", vtmnm , " volume in ddd (%):</b> ", round(volume_ddd, 0), " (", scales::percent(prop_use, accuracy = 0.1), ")"
+                             )
+               ), 
+           stat='identity',
+           # position = position_dodge()
+           ) +
+  scale_fill_viridis_d() +
+  labs(subtitle = paste0("From: ", min(df_scmd_ddd_map$year_month), " to ", max(df_scmd_ddd_map$year_month)),
+       x = NULL,
+       y = "Defined Daily Dose",
+       fill = NULL) +
+  scale_y_continuous(labels = scales::comma) +
+  theme(text = element_text(size = 12)) +
+  coord_flip()
+
+# temp_ggplot
+plotly::ggplotly(temp_ggplot,
+                 tooltip = "text") %>%
+  plotly::config(displayModeBar = FALSE)
+```
+
+### STPs
+
+```{r, fig.width=8, fig.height=6, fig.cap="Figure. Total prescribing of narcolepsy treatments for 20 STPs with the largest volume across all selected medications."}
+df_scmd_ddd_map_temp <- df_scmd_ddd_map %>% 
+  # filter(year_month >= as.Date("2019-08-01") & year_month <= as.Date("2020-07-01")) %>%
+  select(year_month, ods_code, vtmnm, volume_ddd, stp_name) %>% 
+  mutate(stp_name = fct_explicit_na(stp_name)) %>% 
+  group_by(stp_name, vtmnm) %>%
+  summarise(volume_ddd = sum(volume_ddd)) %>%
+  group_by(stp_name) %>%
+  mutate(prop_use = volume_ddd / sum(volume_ddd, na.rm = TRUE),
+         pos = cumsum(volume_ddd) - volume_ddd/2,
+         total = sum(volume_ddd, na.rm = TRUE)) %>%
+  ungroup() %>% 
+  mutate(rank = dense_rank(-total),
+         stp_name = fct_reorder(stp_name, -rank))
+
+temp_ggplot <- df_scmd_ddd_map_temp %>% 
+  filter(rank <= 20) %>% 
+  ggplot(aes(stp_name)) +
+  geom_bar(aes(y = volume_ddd,
+               fill = vtmnm,
+               text = paste0("<b>STP:</b> ", stp_name, "<br>",
+                             "<b>Total volume in ddd:</b> ", round(total, 0), "<br>",
+                             "<b>", vtmnm , " volume in ddd:</b> ", round(volume_ddd, 0), " (", scales::percent(prop_use, accuracy = 0.1), ")")),
+           stat = 'identity') +
+  scale_fill_viridis_d() +
+  labs(subtitle = paste0("From: ", min(df_scmd_ddd_map$year_month), " to ", max(df_scmd_ddd_map$year_month)),
+       x = NULL,
+       y = "Defined Daily Dose",
+       fill = NULL) +
+  scale_y_continuous(labels = scales::comma) +
+  theme(text = element_text(size = 12),
+        legend.position = "bottom") +
+  coord_flip()
+
+# temp_ggplot
+plotly::ggplotly(temp_ggplot,
+                 tooltip = "text") %>%
+  plotly::config(displayModeBar = FALSE) %>% 
+  layout(legend = list(orientation = "h", x = -0.5, y =-.15))
+```
+
+- The following table shows the % use for all STPs
+
+```{r}
+# Create table, code here: "scripts/create_tables.R"
+# the data is defined above and needs to contain the following columns:
+# - stp_name <fct>
+# - vtmnm <chr>
+# - volume_ddd <dbl>
+# - prop_use <dbl>
+# - pos <dbl>
+# - total <dbl>
+# - rank <int>
+create_med_use_table(data = df_scmd_ddd_map_temp)
+```
+
+# References
