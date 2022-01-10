@@ -1,0 +1,39 @@
+type,id,bnf_code,nm,ingredient,ddd
+vmp,11718311000001101,0404000L0AAARAR,Dexamfetamine 7.5mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,11718211000001109,0404000L0AAARAR,Dexamfetamine 7.5mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11717111000001104,0404000L0AAAQAQ,Dexamfetamine 100mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,11717011000001100,0404000L0AAAQAQ,Dexamfetamine 100mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11717311000001102,0404000L0AAANAN,Dexamfetamine 10mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,11717211000001105,0404000L0AAANAN,Dexamfetamine 10mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11717511000001108,0404000L0AAAPAP,Dexamfetamine 125mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,11717411000001109,0404000L0AAAPAP,Dexamfetamine 125mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11717711000001103,0404000L0AAATAT,Dexamfetamine 2.5mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,11717611000001107,0404000L0AAATAT,Dexamfetamine 2.5mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11717911000001101,0404000L0AAAUAU,Dexamfetamine 3mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,11717811000001106,0404000L0AAAUAU,Dexamfetamine 3mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11718111000001103,0404000L0AABBBB,Dexamfetamine 45mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,11718011000001104,0404000L0AABBBB,Dexamfetamine 45mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11787411000001106,0404000L0AAAMAM,Dexamfetamine 5mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,11787511000001105,0404000L0AAAMAM,Dexamfetamine 5mg/5ml oral suspension,Dexamfetamine sulfate,15
+vmp,13383911000001101,190400000AAJNJN,Dexamfetamine powder,Dexamfetamine sulfate,NA
+vmp,15000411000001109,0404000L0AABJBJ,Dexamfetamine 20mg/5ml oral solution,Dexamfetamine sulfate,15
+vmp,24670011000001107,0404000L0AABMBM,Dexamfetamine 5mg/5ml oral solution sugar free,Dexamfetamine sulfate,15
+vmp,13453711000001104,0404000L0AABABA,Dexamfetamine 10mg modified-release capsules,Dexamfetamine sulfate,15
+vmp,13453811000001107,0404000L0AABCBC,Dexamfetamine 5mg modified-release capsules,Dexamfetamine sulfate,15
+vmp,15852411000001101,0404000L0AABHBH,Amfetamine 5mg / Dexamfetamine 5mg modified-release capsules,Dexamfetamine,NA
+vmp,15852311000001108,0404000L0AABDBD,Amfetamine 2.5mg / Dexamfetamine 2.5mg modified-release capsules,Dexamfetamine,NA
+vmp,15852611000001103,0404000L0AABEBE,Amfetamine 7.5mg / Dexamfetamine 7.5mg modified-release capsules,Dexamfetamine,NA
+vmp,15852011000001105,0404000L0AAAFAF,Amfetamine 10mg / Dexamfetamine 10mg modified-release capsules,Dexamfetamine,NA
+vmp,15852111000001106,0404000L0AABFBF,Amfetamine 12.5mg / Dexamfetamine 12.5mg modified-release capsules,Dexamfetamine,NA
+vmp,15852211000001100,0404000L0AAAYAY,Amfetamine 15mg / Dexamfetamine 15mg modified-release capsules,Dexamfetamine,NA
+vmp,38932111000001105,NA,Solriamfetol 75mg tablets,Solriamfetol hydrochloride,NA
+vmp,38932011000001109,NA,Solriamfetol 150mg tablets,Solriamfetol hydrochloride,NA
+vmp,15852511000001102,0404000L0AAAVAV,Amfetamine 5mg / Dexamfetamine 5mg tablets,Dexamfetamine,NA
+vmp,33470511000001103,0404000W0AAAAAA,Pitolisant 18mg tablets,Pitolisant hydrochloride,18
+vmp,33470611000001104,0404000W0AAABAB,Pitolisant 4.5mg tablets,Pitolisant hydrochloride,18
+vmp,33595811000001106,0404000L0AABNBN,Dexamfetamine 10mg tablets,Dexamfetamine sulfate,15
+vmp,33595911000001101,0404000L0AABPBP,Dexamfetamine 20mg tablets,Dexamfetamine sulfate,15
+vmp,12865011000001105,NA,Dexamfetamine 5mg/5ml oral solution sugar- free,Dexamfetamine sulfate,NA
+vmp,15611211000001109,NA,Dexamfetamine 10mg tablets.,Dexamfetamine sulfate,NA
+vmp,7719911000001107,0404000L0AAABAB,Dexamfetamine 15mg modified-release capsules,Dexamfetamine sulfate,15
+vmp,39708411000001103,0404000L0AAAJAJ,Dexamfetamine 5mg tablets,Dexamfetamine sulfate,15
