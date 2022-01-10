@@ -15,13 +15,11 @@ create_ingredient_lookup_sql <- function(ingredient_list, wildcards = TRUE, retu
   return <- match.arg(return)
   
   # Define beginning of SQL query 
-  sql_query_base <- c("SELECT *
-FROM (SELECT 'vmp' AS type, vmp.id, bnf_code, vmp.nm, ing.nm AS ingredient, ddd.ddd 
+  sql_query_base <- c("SELECT 'vmp' AS type, CAST(vmp.id AS STRING) AS id, bnf_code, vmp.nm, ing.nm AS ingredient, ddd.ddd 
 FROM dmd.vmp
 INNER JOIN dmd.vpi AS vpi ON vmp.id = vpi.vmp 
 INNER JOIN dmd.ing as ing ON ing.id = vpi.ing 
 LEFT JOIN dmd.ddd on vmp.id = ddd.vpid
-ORDER BY type, nm)
 ")
   
   # Write SQL for wildcards
@@ -43,12 +41,12 @@ ORDER BY type, nm)
       
       if (ingredient == 1) {
         
-        sql_query_where_wild <- paste0("WHERE ", "`ingredient` ", "LIKE ", 
+        sql_query_where_wild <- paste0("WHERE ", "ing.nm ", "LIKE ", 
                                        "'", wild_ingredient_list[1], "'\n")
         
       } else {
         
-        sql_query_or_wild[ingredient - 1] <- paste0("   ", "OR ", "`ingredient` ", "LIKE ", 
+        sql_query_or_wild[ingredient - 1] <- paste0("   ", "OR ", "ing.nm ", "LIKE ", 
                                                          "'", wild_ingredient_list[ingredient], "'\n")
         
       }
