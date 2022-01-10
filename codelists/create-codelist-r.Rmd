@@ -40,7 +40,7 @@ source(here("scripts/create_ingredient_lookup_sql.R"))
 ingredient_list <- c('Sodium Oxybate', 
                      'Pitolisant', 
                      'Solriamfetol', 
-                     'Modafinol', 
+                     'Modafinil', 
                      'Dexamfetamine')
 ```
 
