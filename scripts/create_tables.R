@@ -52,8 +52,8 @@ create_med_use_table <- function(data) {
   names(col_def_list_prop_all) <- prop_use_var_list
   
   # Regex to extract the product name only from the column name
-  prop_use_var_list_products <- stringr::str_extract(string = prop_use_var_list, 
-                                                     pattern = "(?<=prop_use_)[:alpha:]+")
+  prop_use_var_list_products <- stringr::str_remove(string = prop_use_var_list, 
+                                                     pattern = "prop_use_")
   
   # For loop to fill the placeholder name with the correct product name
   for (product in seq_along(col_def_list_prop_all)) {
