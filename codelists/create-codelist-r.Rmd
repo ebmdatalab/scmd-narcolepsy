@@ -106,6 +106,6 @@ df_ingredients %>%
 
 ```{r}
 # Write csv codelist 
-write_csv(df_ingredients, file = here("data/daytime-sleepiness-meds.csv"))
+write_csv(df_ingredients, file = here("data/narcolepsy-meds.csv"))
 ```
 
