@@ -491,11 +491,11 @@ temp_ggplot <- df_scmd_ddd_map %>%
   select(year_month, ods_code, vtmnm, volume_ddd, comm_region_name) %>% 
   mutate(comm_region_name = fct_explicit_na(comm_region_name)) %>% 
   group_by(comm_region_name, vtmnm) %>%
-  summarise(volume_ddd = sum(volume_ddd)) %>%
+  summarise(volume_ddd = sum(volume_ddd, na.rm = TRUE)) %>%
   group_by(comm_region_name) %>%
   mutate(prop_use = volume_ddd / sum(volume_ddd, na.rm = TRUE),
          pos = cumsum(volume_ddd) - volume_ddd/2,
-         total = sum(volume_ddd), na.rm = TRUE) %>%
+         total = sum(volume_ddd, na.rm = TRUE)) %>%
   ungroup() %>% 
   mutate(comm_region_name = fct_reorder(comm_region_name, total)) %>% 
   ggplot(aes(comm_region_name)) +
