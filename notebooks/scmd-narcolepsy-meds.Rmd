@@ -13,7 +13,7 @@ navbar:
 bibliography: "references.bib"
 link-citations: true
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r rmd-setup, include=FALSE}
@@ -173,7 +173,7 @@ df_etr %>%
 # Connect to database, filter, and collect data.
 # Get SCMD dataset
 # db_scmd <- dplyr::tbl(conn_ebm_scmd, sql_query_scmd)
-# Create dataframe for table
+# # Create dataframe for table
 # df_scmd <- db_scmd %>%
 #   dplyr::filter(vmp_snomed_code %in% codes) %>%
 #   dplyr::collect()
@@ -183,6 +183,11 @@ df_etr %>%
 # Read csv created above using bigquery database
 df_scmd <- read_csv(here("data/df_scmd_narcolepsy.csv"),
                     col_types = cols(vmp_snomed_code = col_character()))
+
+db_scmd %>% 
+  filter(vmp_snomed_code == "39708411000001103") %>%
+  filter(ods_code == "RTR") %>% 
+  arrange(year_month)
 ```
 
 - The current data includes SCMD data from `r min(df_scmd$year_month)` to `r max(df_scmd$year_month)`
@@ -318,11 +323,9 @@ df_tab_sparkline %>%
 ```{r, cache=TRUE}
 # Uncomment to get data from bigquery and write csv
 # db_dmd_info <- dplyr::tbl(conn_ebm_scmd, sql_query_dmd_info)
-# 
 # df_dmd_info <- db_dmd_info %>%
 #   filter(vmp_snomed_code %in% codes) %>%
 #   collect()
-# 
 # write_csv(df_dmd_info, here("data/df_dmd_info.csv"))
 
 # Read the csv file 
@@ -395,13 +398,14 @@ The final data cleaning step is to convert the volume from VMP quantity (as prov
   - Finally translate volume in strength of ingredient to volume in DDDs, using the DDD information published by the WHO
 
 ```{r}
-df_scmd_ddd <- df_scmd_mg %>% 
+df_scmd_ddd <-
+  df_scmd_mg %>% 
   mutate(volume_singles = total_quantity / udfs,
-         volume_mg_strength = volume_singles * if_else(is.na(strnt_dnmtr_val), 
+         volume_mg_strength = volume_singles * if_else(is.na(strnt_dnmtr_val),
                                                        true = strnt_nmrtr_val, 
-                                                       false = strnt_nmrtr_val * 
-                                                               (udfs / strnt_dnmtr_val)),
-         volume_ddd = volume_mg_strength / ddd)
+                                                       false = strnt_nmrtr_val * (udfs / strnt_dnmtr_val)),
+         volume_ddd = volume_mg_strength / ddd) %>% 
+  arrange(year_month, ods_code, vmp_snomed_code)
 ```
 
 # Results
@@ -448,11 +452,12 @@ df_scmd_ddd_map <- df_scmd_ddd %>%
   left_join(stp_to_region_map, by = "stp_code")
 ```
 
-```{r, fig.width=8, fig.height=8, fig.cap="Figure. Regional prescribing of narcolepsy treatments over time."}
+```{r, fig.width=8, fig.height=12, fig.cap="Figure. Regional prescribing of narcolepsy treatments over time."}
 temp_ggplot <- df_scmd_ddd_map %>%
   group_by(comm_region_name, year_month, vtmnm) %>%
   summarise(volume_ddd = sum(volume_ddd)) %>% 
   mutate(comm_region_name = fct_explicit_na(comm_region_name)) %>% 
+  filter(vtmnm == "Dexamfetamine") %>% 
   ggplot(aes(x = year_month, y = volume_ddd, 
              colour = comm_region_name, group = comm_region_name)) +
   geom_vline(xintercept = as.numeric(as.Date("2020-03-31")), 
@@ -474,7 +479,7 @@ temp_ggplot <- df_scmd_ddd_map %>%
        y = "Defined Daily Dose",
        colour = NULL) +
   facet_wrap(~vtmnm, ncol = 1) +
-  theme(text = element_text(size = 12)) 
+  theme(text = element_text(size = 10)) 
   
 # temp_ggplot
 plotly::ggplotly(temp_ggplot,

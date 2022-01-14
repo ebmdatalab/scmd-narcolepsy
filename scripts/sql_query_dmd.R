@@ -49,4 +49,5 @@ sql_query_dmd_info <- dbplyr::sql("SELECT
                                    ON a.vtm = j.id
 
                                    LEFT JOIN ebmdatalab.hscic.bnf AS k
+                                   
                                    ON a.bnf_code = k.presentation_code")

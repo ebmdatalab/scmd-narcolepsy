@@ -41,13 +41,13 @@ LEFT JOIN dmd.ddd on vmp.id = ddd.vpid
       
       if (ingredient == 1) {
         
-        sql_query_where_wild <- paste0("WHERE ", "ing.nm ", "LIKE ", 
-                                       "'", wild_ingredient_list[1], "'\n")
+        sql_query_where_wild <- paste0("WHERE ", "LOWER(ing.nm) ", "LIKE ", 
+                                       "LOWER('", wild_ingredient_list[1], "')\n")
         
       } else {
         
-        sql_query_or_wild[ingredient - 1] <- paste0("   ", "OR ", "ing.nm ", "LIKE ", 
-                                                         "'", wild_ingredient_list[ingredient], "'\n")
+        sql_query_or_wild[ingredient - 1] <- paste0("   ", "OR ", "LOWER(ing.nm) ", "LIKE ", 
+                                                         "LOWER('", wild_ingredient_list[ingredient], "')\n")
         
       }
     }
