@@ -1,6 +1,6 @@
 ---
 title: "Create Codelist"
-subtitle: "Daytime sleepiness"
+subtitle: "Narcolepsy"
 output:
   html_document:
     code_folding: hide
@@ -45,9 +45,11 @@ ingredient_list <- c('Sodium Oxybate',
                      "Methylphenidate")
 ```
 
-# Create case insensitive SQL query including wildcards
+# Create SQL query
 
-- This code also gets ddd information
+- including wildcards at the beginning and end
+- Case insensitive search using LOWER function
+- This code also gets `ddd` information from the `dmd.ddd` table
 
 ```{r, class.source = 'fold-show'}
 
@@ -68,6 +70,20 @@ cat(sql_wild_ingredients)
 ```{r}
 df_ingredients <- dplyr::tbl(conn_ebm_dmd, sql_wild_ingredients) %>% 
   collect()
+
+df_ingredients %>% 
+  reactable(filterable = TRUE,
+            columns = list(
+              type = reactable::colDef(minWidth = 40),
+              id = reactable::colDef(minWidth = 100),
+              bnf_code = reactable::colDef(minWidth = 100),
+              nm = reactable::colDef(minWidth = 200),
+              ingredient = reactable::colDef(minWidth = 100),
+              ddd = reactable::colDef(minWidth = 30)
+            ),
+            style = list(fontSize = "12px"),
+            highlight = TRUE,
+            defaultPageSize = nrow(df_ingredients))
 ```
 
 ## ddd availability
@@ -85,27 +101,10 @@ df_ingredients %>%
             highlight = TRUE)
 ```
 
-## Detailed information
 
-```{r}
+# Export codelist to .csv
 
-df_ingredients %>% 
-  reactable(filterable = TRUE,
-            groupBy = "ingredient",
-            columns = list(
-              type = reactable::colDef(minWidth = 30),
-              id = reactable::colDef(minWidth = 60),
-              bnf_code = reactable::colDef(minWidth = 100),
-              nm = reactable::colDef(minWidth = 200),
-              ingredient = reactable::colDef(minWidth = 100),
-              ddd = reactable::colDef(minWidth = 30)
-            ),
-            style = list(fontSize = "12px"),
-            highlight = TRUE
-)
-```
-
-<!-- # Write .csv -->
+- The .csv file is available [here](https://github.com/ebmdatalab/scmd-narcolepsy/blob/update-codelist/data/narcolepsy-meds.csv)
 
 ```{r}
 # Write csv codelist 
