@@ -3,9 +3,9 @@
 sql_query_dmd_info <- dbplyr::sql("SELECT
                                    CAST(a.id AS STRING) AS vmp_snomed_code,
                                    a.nm AS vmp_product_name,
-                                   a.vtm AS vtmid,
+                                   CAST(a.vtm AS STRING) AS vtmid,
                                    j.nm AS vtmnm,
-                                   b.form AS form_cd,
+                                   CAST(b.form AS STRING) AS form_cd,
                                    c.descr AS form_descr,
                                    a.df_ind AS df_ind_cd,
                                    d.descr AS df_descr,
