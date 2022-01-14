@@ -1,4 +1,5 @@
 vmp_snomed_code,vmp_product_name,vtmid,vtmnm,form_cd,form_descr,df_ind_cd,df_descr,udfs,udfs_descr,unit_dose_descr,strnt_nmrtr_val,strnt_nmrtr_uom,strnt_dnmtr_val,strnt_dnmtr_descr,bnf_code,bnf_presentation
+395522003,Sodium oxybate 500mg/ml oral solution sugar free,NA,Sodium oxybate,385023001,Oral solution,2,Continuous,NA,NA,NA,500,mg,1,ml,0401010ACAAAAAA,Sodium oxybate 500mg/ml oral solution sugar free
 11718311000001101,Dexamfetamine 7.5mg/5ml oral suspension,50868004,Dexamfetamine,385024007,Oral suspension,2,Continuous,NA,NA,NA,1.5,mg,1,ml,0404000L0AAARAR,Dexamfetamine 7.5mg/5ml oral liquid
 11718211000001109,Dexamfetamine 7.5mg/5ml oral solution,50868004,Dexamfetamine,385023001,Oral solution,2,Continuous,NA,NA,NA,1.5,mg,1,ml,0404000L0AAARAR,Dexamfetamine 7.5mg/5ml oral liquid
 11717111000001104,Dexamfetamine 100mg/5ml oral suspension,50868004,Dexamfetamine,385024007,Oral suspension,2,Continuous,NA,NA,NA,20,mg,1,ml,0404000L0AAAQAQ,Dexamfetamine 100mg/5ml oral liquid
@@ -16,7 +17,13 @@ vmp_snomed_code,vmp_product_name,vtmid,vtmnm,form_cd,form_descr,df_ind_cd,df_des
 11787411000001106,Dexamfetamine 5mg/5ml oral solution,50868004,Dexamfetamine,385023001,Oral solution,2,Continuous,NA,NA,NA,1,mg,1,ml,0404000L0AAAMAM,Dexamfetamine 5mg/5ml oral liquid
 11787511000001105,Dexamfetamine 5mg/5ml oral suspension,50868004,Dexamfetamine,385024007,Oral suspension,2,Continuous,NA,NA,NA,1,mg,1,ml,0404000L0AAAMAM,Dexamfetamine 5mg/5ml oral liquid
 13383911000001101,Dexamfetamine powder,NA,NA,85581007,Powder,2,Continuous,NA,NA,NA,1,mg,1,gram,190400000AAJNJN,Dexamfetamine powder
+14984211000001103,Modafinil 100mg/5ml oral solution,116082007,Modafinil,385023001,Oral solution,2,Continuous,NA,NA,NA,20,mg,1,ml,0404000R0AAADAD,Modafinil 100mg/5ml oral solution
+14984311000001106,Modafinil 100mg/5ml oral suspension,116082007,Modafinil,385024007,Oral suspension,2,Continuous,NA,NA,NA,20,mg,1,ml,0404000R0AAAGAG,Modafinil 100mg/5ml oral suspension
 15000411000001109,Dexamfetamine 20mg/5ml oral solution,50868004,Dexamfetamine,385023001,Oral solution,2,Continuous,NA,NA,NA,4,mg,1,ml,0404000L0AABJBJ,Dexamfetamine 20mg/5ml oral solution
+32750011000001108,Modafinil 200mg/5ml oral solution,116082007,Modafinil,385023001,Oral solution,2,Continuous,NA,NA,NA,40,mg,1,ml,0404000R0AAAFAF,Modafinil 200mg/5ml oral solution
+28897511000001100,Sodium acetate 3mmol/50ml / Sodium oxybate 2mmol/50ml / Sodium propionate 1.5mmol/50ml enema,NA,Sodium acetate + Sodium oxybate + Sodium propionate,NA,Enema,1,Discrete,50,ml,enema,30,micromol,1,ml,NA,NA
+28897511000001100,Sodium acetate 3mmol/50ml / Sodium oxybate 2mmol/50ml / Sodium propionate 1.5mmol/50ml enema,NA,Sodium acetate + Sodium oxybate + Sodium propionate,NA,Enema,1,Discrete,50,ml,enema,40,micromol,1,ml,NA,NA
+28897511000001100,Sodium acetate 3mmol/50ml / Sodium oxybate 2mmol/50ml / Sodium propionate 1.5mmol/50ml enema,NA,Sodium acetate + Sodium oxybate + Sodium propionate,NA,Enema,1,Discrete,50,ml,enema,60,micromol,1,ml,NA,NA
 24670011000001107,Dexamfetamine 5mg/5ml oral solution sugar free,50868004,Dexamfetamine,385023001,Oral solution,1,Discrete,5,ml,spoonful,1,mg,1,ml,0404000L0AABMBM,Dexamfetamine 5mg/5ml oral solution sugar free
 13453711000001104,Dexamfetamine 10mg modified-release capsules,50868004,Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,10,mg,NA,NA,0404000L0AABABA,Dexamfetamine 10mg modified-release capsules
 13453811000001107,Dexamfetamine 5mg modified-release capsules,50868004,Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,5,mg,NA,NA,0404000L0AABCBC,Dexamfetamine 5mg modified-release capsules
@@ -32,8 +39,16 @@ vmp_snomed_code,vmp_product_name,vtmid,vtmnm,form_cd,form_descr,df_ind_cd,df_des
 15852111000001106,Amfetamine 12.5mg / Dexamfetamine 12.5mg modified-release capsules,411098003,Amfetamine + Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,12.5,mg,NA,NA,0404000L0AABFBF,Amfetamine 12.5mg / Dexamfetamine 12.5mg MR caps
 15852211000001100,Amfetamine 15mg / Dexamfetamine 15mg modified-release capsules,411098003,Amfetamine + Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,15,mg,NA,NA,0404000L0AAAYAY,Amfetamine 15mg / Dexamfetamine 15mg modified-release caps
 15852211000001100,Amfetamine 15mg / Dexamfetamine 15mg modified-release capsules,411098003,Amfetamine + Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,15,mg,NA,NA,0404000L0AAAYAY,Amfetamine 15mg / Dexamfetamine 15mg modified-release caps
+432411009,Lisdexamfetamine 20mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,20,mg,NA,NA,0404000U0AAAAAA,Lisdexamfetamine 20mg capsules
+426493003,Lisdexamfetamine 30mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,30,mg,NA,NA,0404000U0AAABAB,Lisdexamfetamine 30mg capsules
+432677009,Lisdexamfetamine 40mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,40,mg,NA,NA,0404000U0AAACAC,Lisdexamfetamine 40mg capsules
+426412009,Lisdexamfetamine 50mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,50,mg,NA,NA,0404000U0AAADAD,Lisdexamfetamine 50mg capsules
+433011005,Lisdexamfetamine 60mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,60,mg,NA,NA,0404000U0AAAEAE,Lisdexamfetamine 60mg capsules
+426586000,Lisdexamfetamine 70mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,70,mg,NA,NA,0404000U0AAAFAF,Lisdexamfetamine 70mg capsules
 38932111000001105,Solriamfetol 75mg tablets,NA,Solriamfetol,385055001,Tablet,1,Discrete,1,tablet,tablet,75,mg,NA,NA,NA,NA
 38932011000001109,Solriamfetol 150mg tablets,NA,Solriamfetol,385055001,Tablet,1,Discrete,1,tablet,tablet,150,mg,NA,NA,NA,NA
+323385006,Modafinil 100mg tablets,116082007,Modafinil,385055001,Tablet,1,Discrete,1,tablet,tablet,100,mg,NA,NA,0404000R0AAAAAA,Modafinil 100mg tablets
+407861004,Modafinil 200mg tablets,116082007,Modafinil,385055001,Tablet,1,Discrete,1,tablet,tablet,200,mg,NA,NA,0404000R0AAACAC,Modafinil 200mg tablets
 15852511000001102,Amfetamine 5mg / Dexamfetamine 5mg tablets,411098003,Amfetamine + Dexamfetamine,385055001,Tablet,1,Discrete,1,tablet,tablet,5,mg,NA,NA,0404000L0AAAVAV,Amfetamine 5mg / Dexamfetamine 5mg tablets
 15852511000001102,Amfetamine 5mg / Dexamfetamine 5mg tablets,411098003,Amfetamine + Dexamfetamine,385055001,Tablet,1,Discrete,1,tablet,tablet,5,mg,NA,NA,0404000L0AAAVAV,Amfetamine 5mg / Dexamfetamine 5mg tablets
 33470511000001103,Pitolisant 18mg tablets,NA,Pitolisant,385055001,Tablet,1,Discrete,1,tablet,tablet,18,mg,NA,NA,0404000W0AAAAAA,Pitolisant 18mg tablets
