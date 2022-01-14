@@ -1,4 +1,20 @@
 type,id,bnf_code,nm,ingredient,ddd
+vmp,36095311000001108,0404000T0AAAAAA,Dexmethylphenidate 10mg modified-release capsules,Dexmethylphenidate hydrochloride,15
+vmp,323358004,0404000M0AAAJAJ,Methylphenidate 5mg tablets,Methylphenidate hydrochloride,30
+vmp,323353008,0404000M0AAAAAA,Methylphenidate 10mg tablets,Methylphenidate hydrochloride,30
+vmp,323359007,0404000M0AAAKAK,Methylphenidate 20mg tablets,Methylphenidate hydrochloride,30
+vmp,36123511000001103,0404000M0AAAMAM,Methylphenidate 18mg modified-release tablets,Methylphenidate hydrochloride,30
+vmp,36124511000001100,0404000M0AAANAN,Methylphenidate 36mg modified-release tablets,Methylphenidate hydrochloride,30
+vmp,36124211000001103,0404000M0AAATAT,Methylphenidate 27mg modified-release tablets,Methylphenidate hydrochloride,30
+vmp,36124811000001102,0404000M0AAARAR,Methylphenidate 54mg modified-release tablets,Methylphenidate hydrochloride,30
+vmp,36124111000001109,0404000M0AAAHAH,Methylphenidate 20mg modified-release tablets,Methylphenidate hydrochloride,30
+vmp,36123411000001102,0404000M0AAAUAU,Methylphenidate 10mg modified-release capsules,Methylphenidate hydrochloride,30
+vmp,36124011000001108,0404000M0AAAQAQ,Methylphenidate 20mg modified-release capsules,Methylphenidate hydrochloride,30
+vmp,36124311000001106,0404000M0AAAVAV,Methylphenidate 30mg modified-release capsules,Methylphenidate hydrochloride,30
+vmp,36124611000001101,0404000M0AAAWAW,Methylphenidate 40mg modified-release capsules,Methylphenidate hydrochloride,30
+vmp,19448911000001107,0404000M0AAAYAY,Methylphenidate 5mg modified-release capsules,Methylphenidate hydrochloride,30
+vmp,36124711000001105,0404000M0AAAZAZ,Methylphenidate 50mg modified-release capsules,Methylphenidate hydrochloride,30
+vmp,24510311000001109,0404000M0AABABA,Methylphenidate 60mg modified-release capsules,Methylphenidate hydrochloride,30
 vmp,38932111000001105,NA,Solriamfetol 75mg tablets,Solriamfetol hydrochloride,NA
 vmp,38932011000001109,NA,Solriamfetol 150mg tablets,Solriamfetol hydrochloride,NA
 vmp,33470511000001103,0404000W0AAAAAA,Pitolisant 18mg tablets,Pitolisant hydrochloride,18
@@ -25,6 +41,14 @@ vmp,13453811000001107,0404000L0AABCBC,Dexamfetamine 5mg modified-release capsule
 vmp,15611211000001109,NA,Dexamfetamine 10mg tablets.,Dexamfetamine sulfate,NA
 vmp,33595811000001106,0404000L0AABNBN,Dexamfetamine 10mg tablets,Dexamfetamine sulfate,15
 vmp,33595911000001101,0404000L0AABPBP,Dexamfetamine 20mg tablets,Dexamfetamine sulfate,15
+vmp,12140011000001100,0404000M0AAACAC,Methylphenidate 10mg/5ml oral solution,Methylphenidate hydrochloride,30
+vmp,12140111000001104,0404000M0AAAIAI,Methylphenidate 12.5mg/5ml oral solution,Methylphenidate hydrochloride,30
+vmp,12140211000001105,0404000M0AAALAL,Methylphenidate 2.5mg/5ml oral solution,Methylphenidate hydrochloride,30
+vmp,12140311000001102,0404000M0AAAGAG,Methylphenidate 20mg/5ml oral solution,Methylphenidate hydrochloride,30
+vmp,12140411000001109,0404000M0AAADAD,Methylphenidate 6.25mg/5ml oral solution,Methylphenidate hydrochloride,30
+vmp,12390711000001102,0404000M0AAAFAF,Methylphenidate 5mg/5ml oral solution,Methylphenidate hydrochloride,30
+vmp,15411411000001105,0404000M0AAAXAX,Methylphenidate 15mg/5ml oral solution,Methylphenidate hydrochloride,30
+vmp,28012911000001107,0404000M0AABBBB,Methylphenidate 5mg/5ml oral suspension,Methylphenidate hydrochloride,30
 vmp,14984211000001103,0404000R0AAADAD,Modafinil 100mg/5ml oral solution,Modafinil,300
 vmp,14984311000001106,0404000R0AAAGAG,Modafinil 100mg/5ml oral suspension,Modafinil,300
 vmp,32750011000001108,0404000R0AAAFAF,Modafinil 200mg/5ml oral solution,Modafinil,300

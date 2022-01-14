@@ -41,10 +41,13 @@ ingredient_list <- c('Sodium Oxybate',
                      'Pitolisant', 
                      'Solriamfetol', 
                      'Modafinil', 
-                     'Dexamfetamine')
+                     'Dexamfetamine',
+                     "Methylphenidate")
 ```
 
-# Create SQL queriy including wildcards
+# Create case insensitive SQL query including wildcards
+
+- This code also gets ddd information
 
 ```{r, class.source = 'fold-show'}
 
@@ -62,7 +65,7 @@ cat(sql_wild_ingredients)
 
 # Show results
 
-```{r, cache=TRUE}
+```{r}
 df_ingredients <- dplyr::tbl(conn_ebm_dmd, sql_wild_ingredients) %>% 
   collect()
 ```
