@@ -70,11 +70,21 @@ codelist <- read_csv(here("data/narcolepsy-meds.csv"),
                     # convert to strings (they are stored as strings in SCMD table)
                     col_types = cols(id = col_character()))
 
-# changed col type in read_csv function above 
-codes <- codelist$id
+# Exclude some drugs here
+codelist <- codelist %>% 
+   # Sodium acetate 3mmol/50ml / Sodium oxybate 2mmol/50ml / Sodium propionate 1.5mmol/50ml enema
+  filter(id != "28897511000001100") %>% 
+  # Solriamfetol
+  filter(id != "38932111000001105") %>% 
+  filter(id != "38932011000001109")
+
+# pull snomed codes here into a new object for later use
+codes <- codelist %>% 
+  pull(id)
 ```
 
 ```{r}
+# create interactive table showing codelist (including ddd where available)
 codelist %>% 
   reactable(filterable = TRUE,
             columns = list(
@@ -110,10 +120,8 @@ df_etr <- readr::read_csv(here::here("data/etr_tidy.csv")) %>%
 # load older ETR data and find any additional codes here not in current list
 df_etr_historic <- readr::read_csv(here::here("data/etr.csv"), 
                                    col_names = FALSE) %>%
-  select(1:4) 
+  select("ods_code" = "X1", "ods_name" = "X2", "region_code" = "X3", "stp_code" = "X4") 
 
-colnames(df_etr_historic) <- c("ods_code", "ods_name", "region_code", "stp_code")
- 
 df_etr_intersect <- intersect(df_etr$ods_code, df_etr_historic$ods_code)
 
 df_etr_historic <- df_etr_historic %>% 
@@ -177,7 +185,7 @@ df_scmd <- db_scmd %>%
   dplyr::filter(vmp_snomed_code %in% codes) %>%
   dplyr::collect()
 # # Write csv file
-# write_csv(df_scmd, here("data/df_scmd_narcolepsy.csv"))
+write_csv(df_scmd, here("data/df_scmd_narcolepsy.csv"))
 
 # Read csv created above using bigquery database
 df_scmd <- read_csv(here("data/df_scmd_narcolepsy.csv"),
@@ -204,6 +212,8 @@ df_scmd_names <- df_scmd %>%
            ods_code == "R1E" ~ "QNC", # Staffs
            ods_code == "TAD" ~ "QWO", # W Yorks
            ods_code == "TAJ" ~ "QUA", # Black country
+           ods_code == "TAH" ~ "QF7", # South Yorkshire & Bassetlow
+           ods_code == "TAF" ~ "QMJ", # North Central London
            TRUE ~ stp_code)
          )
 check_missing <- select(df_scmd_names,c("ods_code", "ods_name", "stp_code")) %>%
@@ -300,8 +310,8 @@ df_tab_sparkline %>%
               vmp_snomed_code = reactable::colDef(show = FALSE)
             ),
             style = list(fontSize = "12px"),
-            highlight = TRUE
-)
+            highlight = TRUE)
+
 ```
 
 ### dm+d
@@ -316,11 +326,11 @@ df_tab_sparkline %>%
 
 ```{r, cache=TRUE}
 # Uncomment to get data from bigquery and write csv
-# db_dmd_info <- dplyr::tbl(conn_ebm_scmd, sql_query_dmd_info)
-# df_dmd_info <- db_dmd_info %>%
-#   filter(vmp_snomed_code %in% codes) %>%
-#   collect()
-# write_csv(df_dmd_info, here("data/df_dmd_info.csv"))
+db_dmd_info <- dplyr::tbl(conn_ebm_scmd, sql_query_dmd_info)
+df_dmd_info <- db_dmd_info %>%
+  filter(vmp_snomed_code %in% codes) %>%
+  collect()
+write_csv(df_dmd_info, here("data/df_dmd_info.csv"))
 
 # Read the csv file 
 df_dmd_info <- read_csv(here("data/df_dmd_info.csv"),
@@ -394,32 +404,16 @@ The final data cleaning step is to convert the volume from VMP quantity (as prov
   - Finally translate volume in strength of ingredient to volume in DDDs, using the DDD information published by the WHO
 
 ```{r}
-df_scmd_ddd <-
-  df_scmd_mg %>% 
+df_scmd_ddd <- df_scmd_mg %>% 
   mutate(volume_singles = total_quantity / udfs) %>% 
-  # mutate(volume_singles = case_when(form_descr == "Oral solution" ~ 1)) %>% 
   mutate(volume_mg_strength = volume_singles * if_else(is.na(strnt_dnmtr_val),
                                                        true = strnt_nmrtr_val, 
                                                        false = strnt_nmrtr_val * (udfs / strnt_dnmtr_val)),
          volume_ddd = volume_mg_strength / ddd) %>% 
-  arrange(year_month, ods_code, vmp_snomed_code)
-
-df_scmd_ddd %>%
-  filter(vmp_snomed_code != "28897511000001100") %>%
-  # filter(vtmnm == "Sodium oxybate") %>%
-  select(year_month, ods_code, vmp_snomed_code,
-         # vmp_product_name,
-         total_quantity,
-         # vtmid,
-         vtmnm,
-         # form_cd,
-         form_descr, df_ind_cd, df_descr,
-         udfs, udfs_descr, strnt_nmrtr_val, strnt_nmrtr_uom, strnt_dnmtr_val, strnt_dnmtr_descr,
-         ddd, volume_singles, volume_mg_strength, volume_ddd) 
-
-# %>%
-  # mutate(volume_ddd = case_when(form_descr == "Oral solution" ~ (total_quantity * strnt_nmrtr_val) / ddd,
-                                # TRUE ~ volume_ddd))
+  arrange(year_month, ods_code, vmp_snomed_code) %>% 
+  # Temp fix for unit mismatch in mg to microgram
+  mutate(volume_ddd = case_when(vmp_snomed_code == "395522003" ~ ((total_quantity * strnt_nmrtr_val) / ddd) / 1000,
+                                TRUE ~ volume_ddd))
 
 ```
 
@@ -464,7 +458,11 @@ plotly::ggplotly(temp_ggplot,
 
 ```{r}
 df_scmd_ddd_map <- df_scmd_ddd %>% 
-  left_join(stp_to_region_map, by = "stp_code")
+  left_join(stp_to_region_map, by = "stp_code") %>% 
+  filter(vtmnm != c("Sodium acetate + Sodium oxybate + Sodium propionate")) %>% 
+  filter(vtmnm != c("Solriamfetol")) %>% 
+  filter(vtmnm != c("Amfetamine + Dexamfetamine")) %>% 
+  filter(vtmnm == c("Sodium oxybate"))
 ```
 
 ```{r, fig.width=8, fig.height=12, fig.cap="Figure. Regional prescribing of narcolepsy treatments over time."}
@@ -472,7 +470,6 @@ temp_ggplot <- df_scmd_ddd_map %>%
   group_by(comm_region_name, year_month, vtmnm) %>%
   summarise(volume_ddd = sum(volume_ddd)) %>% 
   mutate(comm_region_name = fct_explicit_na(comm_region_name)) %>% 
-  # filter(vtmnm == "Dexamfetamine") %>% 
   ggplot(aes(x = year_month, y = volume_ddd, 
              colour = comm_region_name, group = comm_region_name)) +
   geom_vline(xintercept = as.numeric(as.Date("2020-03-31")), 
@@ -493,7 +490,9 @@ temp_ggplot <- df_scmd_ddd_map %>%
   labs(x = NULL, 
        y = "Defined Daily Dose",
        colour = NULL) +
-  facet_wrap(~vtmnm, ncol = 2) +
+  facet_wrap(~vtmnm, 
+             ncol = 2, 
+             scales = "free_y") +
   theme(text = element_text(size = 10)) 
   
 # temp_ggplot
@@ -553,7 +552,7 @@ df_scmd_ddd_map_temp <- df_scmd_ddd_map %>%
   select(year_month, ods_code, vtmnm, volume_ddd, stp_name) %>% 
   mutate(stp_name = fct_explicit_na(stp_name)) %>% 
   group_by(stp_name, vtmnm) %>%
-  summarise(volume_ddd = sum(volume_ddd)) %>%
+  summarise(volume_ddd = sum(volume_ddd, na.rm = TRUE)) %>%
   group_by(stp_name) %>%
   mutate(prop_use = volume_ddd / sum(volume_ddd, na.rm = TRUE),
          pos = cumsum(volume_ddd) - volume_ddd/2,
