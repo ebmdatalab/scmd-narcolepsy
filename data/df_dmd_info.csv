@@ -16,15 +16,25 @@ vmp_snomed_code,vmp_product_name,vtmid,vtmnm,form_cd,form_descr,df_ind_cd,df_des
 11718011000001104,Dexamfetamine 45mg/5ml oral solution,50868004,Dexamfetamine,385023001,Oral solution,2,Continuous,NA,NA,NA,9,mg,1,ml,0404000L0AABBBB,Dexamfetamine 45mg/5ml oral liquid
 11787411000001106,Dexamfetamine 5mg/5ml oral solution,50868004,Dexamfetamine,385023001,Oral solution,2,Continuous,NA,NA,NA,1,mg,1,ml,0404000L0AAAMAM,Dexamfetamine 5mg/5ml oral liquid
 11787511000001105,Dexamfetamine 5mg/5ml oral suspension,50868004,Dexamfetamine,385024007,Oral suspension,2,Continuous,NA,NA,NA,1,mg,1,ml,0404000L0AAAMAM,Dexamfetamine 5mg/5ml oral liquid
-13383911000001101,Dexamfetamine powder,NA,NA,85581007,Powder,2,Continuous,NA,NA,NA,1,mg,1,gram,190400000AAJNJN,Dexamfetamine powder
+12140011000001100,Methylphenidate 10mg/5ml oral solution,18548003,Methylphenidate,385023001,Oral solution,2,Continuous,NA,NA,NA,2,mg,1,ml,0404000M0AAACAC,Methylphenidate 10mg/5ml oral solution
+12140111000001104,Methylphenidate 12.5mg/5ml oral solution,18548003,Methylphenidate,385023001,Oral solution,2,Continuous,NA,NA,NA,2.5,mg,1,ml,0404000M0AAAIAI,Methylphenidate 12.5mg/5ml oral solution
+12140211000001105,Methylphenidate 2.5mg/5ml oral solution,18548003,Methylphenidate,385023001,Oral solution,2,Continuous,NA,NA,NA,500,microgram,1,ml,0404000M0AAALAL,Methylphenidate 2.5mg/5ml oral solution
+12140311000001102,Methylphenidate 20mg/5ml oral solution,18548003,Methylphenidate,385023001,Oral solution,2,Continuous,NA,NA,NA,4,mg,1,ml,0404000M0AAAGAG,Methylphenidate 20mg/5ml oral solution
+12140411000001109,Methylphenidate 6.25mg/5ml oral solution,18548003,Methylphenidate,385023001,Oral solution,2,Continuous,NA,NA,NA,1.25,mg,1,ml,0404000M0AAADAD,Methylphenidate 6.25mg/5ml oral solution
+12390711000001102,Methylphenidate 5mg/5ml oral solution,18548003,Methylphenidate,385023001,Oral solution,2,Continuous,NA,NA,NA,1,mg,1,ml,0404000M0AAAFAF,Methylphenidate 5mg/5ml oral solution
+13383911000001101,Dexamfetamine powder,NA,NA,739005008,Powder,2,Continuous,NA,NA,NA,1,mg,1,gram,190400000AAJNJN,Dexamfetamine powder
 14984211000001103,Modafinil 100mg/5ml oral solution,116082007,Modafinil,385023001,Oral solution,2,Continuous,NA,NA,NA,20,mg,1,ml,0404000R0AAADAD,Modafinil 100mg/5ml oral solution
 14984311000001106,Modafinil 100mg/5ml oral suspension,116082007,Modafinil,385024007,Oral suspension,2,Continuous,NA,NA,NA,20,mg,1,ml,0404000R0AAAGAG,Modafinil 100mg/5ml oral suspension
 15000411000001109,Dexamfetamine 20mg/5ml oral solution,50868004,Dexamfetamine,385023001,Oral solution,2,Continuous,NA,NA,NA,4,mg,1,ml,0404000L0AABJBJ,Dexamfetamine 20mg/5ml oral solution
+15411411000001105,Methylphenidate 15mg/5ml oral solution,18548003,Methylphenidate,385023001,Oral solution,2,Continuous,NA,NA,NA,3,mg,1,ml,0404000M0AAAXAX,Methylphenidate 15mg/5ml oral solution
+28012911000001107,Methylphenidate 5mg/5ml oral suspension,18548003,Methylphenidate,385024007,Oral suspension,2,Continuous,NA,NA,NA,1,mg,1,ml,0404000M0AABBBB,Methylphenidate 5mg/5ml oral suspension
 32750011000001108,Modafinil 200mg/5ml oral solution,116082007,Modafinil,385023001,Oral solution,2,Continuous,NA,NA,NA,40,mg,1,ml,0404000R0AAAFAF,Modafinil 200mg/5ml oral solution
-28897511000001100,Sodium acetate 3mmol/50ml / Sodium oxybate 2mmol/50ml / Sodium propionate 1.5mmol/50ml enema,28897911000001107,Sodium acetate + Sodium oxybate + Sodium propionate,13299601000001101,Enema,1,Discrete,50,ml,enema,30,micromol,1,ml,NA,NA
-28897511000001100,Sodium acetate 3mmol/50ml / Sodium oxybate 2mmol/50ml / Sodium propionate 1.5mmol/50ml enema,28897911000001107,Sodium acetate + Sodium oxybate + Sodium propionate,13299601000001101,Enema,1,Discrete,50,ml,enema,40,micromol,1,ml,NA,NA
-28897511000001100,Sodium acetate 3mmol/50ml / Sodium oxybate 2mmol/50ml / Sodium propionate 1.5mmol/50ml enema,28897911000001107,Sodium acetate + Sodium oxybate + Sodium propionate,13299601000001101,Enema,1,Discrete,50,ml,enema,60,micromol,1,ml,NA,NA
 24670011000001107,Dexamfetamine 5mg/5ml oral solution sugar free,50868004,Dexamfetamine,385023001,Oral solution,1,Discrete,5,ml,spoonful,1,mg,1,ml,0404000L0AABMBM,Dexamfetamine 5mg/5ml oral solution sugar free
+36123411000001102,Methylphenidate 10mg modified-release capsules,18548003,Methylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,10,mg,NA,NA,0404000M0AAAUAU,Methylphenidate 10mg modified-release capsules
+36124011000001108,Methylphenidate 20mg modified-release capsules,18548003,Methylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,20,mg,NA,NA,0404000M0AAAQAQ,Methylphenidate 20mg modified-release capsules
+36124311000001106,Methylphenidate 30mg modified-release capsules,18548003,Methylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,30,mg,NA,NA,0404000M0AAAVAV,Methylphenidate 30mg modified-release capsules
+36124611000001101,Methylphenidate 40mg modified-release capsules,18548003,Methylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,40,mg,NA,NA,0404000M0AAAWAW,Methylphenidate 40mg modified-release capsules
+36095311000001108,Dexmethylphenidate 10mg modified-release capsules,36411611000001109,Dexmethylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,10,mg,NA,NA,0404000T0AAAAAA,Dexmethylphenidate 10mg modified-release capsules
 13453711000001104,Dexamfetamine 10mg modified-release capsules,50868004,Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,10,mg,NA,NA,0404000L0AABABA,Dexamfetamine 10mg modified-release capsules
 13453811000001107,Dexamfetamine 5mg modified-release capsules,50868004,Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,5,mg,NA,NA,0404000L0AABCBC,Dexamfetamine 5mg modified-release capsules
 15852411000001101,Amfetamine 5mg / Dexamfetamine 5mg modified-release capsules,411098003,Amfetamine + Dexamfetamine,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,5,mg,NA,NA,0404000L0AABHBH,Amfetamine 5mg / Dexamfetamine 5mg modified-release capsules
@@ -45,10 +55,19 @@ vmp_snomed_code,vmp_product_name,vtmid,vtmnm,form_cd,form_descr,df_ind_cd,df_des
 426412009,Lisdexamfetamine 50mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,50,mg,NA,NA,0404000U0AAADAD,Lisdexamfetamine 50mg capsules
 433011005,Lisdexamfetamine 60mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,60,mg,NA,NA,0404000U0AAAEAE,Lisdexamfetamine 60mg capsules
 426586000,Lisdexamfetamine 70mg capsules,426249000,Lisdexamfetamine,385049006,Capsule,1,Discrete,1,capsule,capsule,70,mg,NA,NA,0404000U0AAAFAF,Lisdexamfetamine 70mg capsules
-38932111000001105,Solriamfetol 75mg tablets,38925811000001107,Solriamfetol,385055001,Tablet,1,Discrete,1,tablet,tablet,75,mg,NA,NA,NA,NA
-38932011000001109,Solriamfetol 150mg tablets,38925811000001107,Solriamfetol,385055001,Tablet,1,Discrete,1,tablet,tablet,150,mg,NA,NA,NA,NA
+19448911000001107,Methylphenidate 5mg modified-release capsules,18548003,Methylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,5,mg,NA,NA,0404000M0AAAYAY,Methylphenidate 5mg modified-release capsules
+36124711000001105,Methylphenidate 50mg modified-release capsules,18548003,Methylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,50,mg,NA,NA,0404000M0AAAZAZ,Methylphenidate 50mg modified-release capsules
+24510311000001109,Methylphenidate 60mg modified-release capsules,18548003,Methylphenidate,385054002,Modified-release capsule,1,Discrete,1,capsule,capsule,60,mg,NA,NA,0404000M0AABABA,Methylphenidate 60mg modified-release capsules
+323358004,Methylphenidate 5mg tablets,18548003,Methylphenidate,385055001,Tablet,1,Discrete,1,tablet,tablet,5,mg,NA,NA,0404000M0AAAJAJ,Methylphenidate 5mg tablets
+323353008,Methylphenidate 10mg tablets,18548003,Methylphenidate,385055001,Tablet,1,Discrete,1,tablet,tablet,10,mg,NA,NA,0404000M0AAAAAA,Methylphenidate 10mg tablets
+323359007,Methylphenidate 20mg tablets,18548003,Methylphenidate,385055001,Tablet,1,Discrete,1,tablet,tablet,20,mg,NA,NA,0404000M0AAAKAK,Methylphenidate 20mg tablets
+36123511000001103,Methylphenidate 18mg modified-release tablets,18548003,Methylphenidate,385061003,Modified-release tablet,1,Discrete,1,tablet,tablet,18,mg,NA,NA,0404000M0AAAMAM,Methylphenidate 18mg modified-release tablets
+36124511000001100,Methylphenidate 36mg modified-release tablets,18548003,Methylphenidate,385061003,Modified-release tablet,1,Discrete,1,tablet,tablet,36,mg,NA,NA,0404000M0AAANAN,Methylphenidate 36mg modified-release tablets
 323385006,Modafinil 100mg tablets,116082007,Modafinil,385055001,Tablet,1,Discrete,1,tablet,tablet,100,mg,NA,NA,0404000R0AAAAAA,Modafinil 100mg tablets
 407861004,Modafinil 200mg tablets,116082007,Modafinil,385055001,Tablet,1,Discrete,1,tablet,tablet,200,mg,NA,NA,0404000R0AAACAC,Modafinil 200mg tablets
+36124211000001103,Methylphenidate 27mg modified-release tablets,18548003,Methylphenidate,385061003,Modified-release tablet,1,Discrete,1,tablet,tablet,27,mg,NA,NA,0404000M0AAATAT,Methylphenidate 27mg modified-release tablets
+36124811000001102,Methylphenidate 54mg modified-release tablets,18548003,Methylphenidate,385061003,Modified-release tablet,1,Discrete,1,tablet,tablet,54,mg,NA,NA,0404000M0AAARAR,Methylphenidate 54mg modified-release tablets
+36124111000001109,Methylphenidate 20mg modified-release tablets,18548003,Methylphenidate,385061003,Modified-release tablet,1,Discrete,1,tablet,tablet,20,mg,NA,NA,0404000M0AAAHAH,Methylphenidate 20mg modified-release tablets
 15852511000001102,Amfetamine 5mg / Dexamfetamine 5mg tablets,411098003,Amfetamine + Dexamfetamine,385055001,Tablet,1,Discrete,1,tablet,tablet,5,mg,NA,NA,0404000L0AAAVAV,Amfetamine 5mg / Dexamfetamine 5mg tablets
 15852511000001102,Amfetamine 5mg / Dexamfetamine 5mg tablets,411098003,Amfetamine + Dexamfetamine,385055001,Tablet,1,Discrete,1,tablet,tablet,5,mg,NA,NA,0404000L0AAAVAV,Amfetamine 5mg / Dexamfetamine 5mg tablets
 33470511000001103,Pitolisant 18mg tablets,33474111000001103,Pitolisant,385055001,Tablet,1,Discrete,1,tablet,tablet,18,mg,NA,NA,0404000W0AAAAAA,Pitolisant 18mg tablets
