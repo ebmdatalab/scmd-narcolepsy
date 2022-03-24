@@ -43,6 +43,7 @@ library(sparkline)
 library(tsibble)
 library(lubridate)
 library(tippy)
+library(tsibble)
 ```
 
 # Background
@@ -179,13 +180,13 @@ df_etr %>%
 # Secondary Care Medicines Data
 # Connect to database, filter, and collect data.
 # Get SCMD dataset
-db_scmd <- dplyr::tbl(conn_ebm_scmd, sql_query_scmd)
+# db_scmd <- dplyr::tbl(conn_ebm_scmd, sql_query_scmd)
 # # Create dataframe for table
-df_scmd <- db_scmd %>%
-  dplyr::filter(vmp_snomed_code %in% codes) %>%
-  dplyr::collect()
+# df_scmd <- db_scmd %>%
+#   dplyr::filter(vmp_snomed_code %in% codes) %>%
+#   dplyr::collect()
 # # Write csv file
-write_csv(df_scmd, here("data/df_scmd_narcolepsy.csv"))
+# write_csv(df_scmd, here("data/df_scmd_narcolepsy.csv"))
 
 # Read csv created above using bigquery database
 df_scmd <- read_csv(here("data/df_scmd_narcolepsy.csv"),
@@ -326,11 +327,11 @@ df_tab_sparkline %>%
 
 ```{r, cache=TRUE}
 # Uncomment to get data from bigquery and write csv
-db_dmd_info <- dplyr::tbl(conn_ebm_scmd, sql_query_dmd_info)
-df_dmd_info <- db_dmd_info %>%
-  filter(vmp_snomed_code %in% codes) %>%
-  collect()
-write_csv(df_dmd_info, here("data/df_dmd_info.csv"))
+# db_dmd_info <- dplyr::tbl(conn_ebm_scmd, sql_query_dmd_info)
+# df_dmd_info <- db_dmd_info %>%
+#   filter(vmp_snomed_code %in% codes) %>%
+#   collect()
+# write_csv(df_dmd_info, here("data/df_dmd_info.csv"))
 
 # Read the csv file 
 df_dmd_info <- read_csv(here("data/df_dmd_info.csv"),
@@ -455,6 +456,8 @@ plotly::ggplotly(temp_ggplot,
 ```
 
 ### Regional prescribing
+
+#### Only show Sodium oxybate for now
 
 ```{r}
 df_scmd_ddd_map <- df_scmd_ddd %>% 
