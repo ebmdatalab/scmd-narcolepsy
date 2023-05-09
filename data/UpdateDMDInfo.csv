@@ -1,6 +1,0 @@
-vmp_snomed_code,vmp_product_name,vtmid,vtmnm,form_cd,form_descr,df_ind_cd,df_descr,udfs,udfs_descr,unit_dose_descr,strnt_nmrtr_val,strnt_nmrtr_uom,strnt_dnmtr_val,strnt_dnmtr_descr,bnf_code,bnf_presentation
-395522003,Sodium oxybate 500mg/ml oral solution sugar free,8791801000001100,Sodium oxybate,385023001,Oral solution,2,Continuous,NA,NA,NA,500,mg,1,ml,0401010ACAAAAAA,Sodium oxybate 500mg/ml oral solution sugar free
-33470511000001100,Pitolisant 18mg tablets,33474111000001100,Pitolisant,385055001,Tablet,1,Discrete,1,tablet,tablet,18,mg,NA,NA,0404000W0AAAAAA,Pitolisant 18mg tablets
-33470611000001100,Pitolisant 4.5mg tablets,33474111000001100,Pitolisant,385055001,Tablet,1,Discrete,1,tablet,tablet,4.5,mg,NA,NA,0404000W0AAABAB,Pitolisant 4.5mg tablets
-38932111000001100,Solriamfetol 75mg tablets,38925611000001100,Solriamfetol,385055001,Tablet,1,Discrete,1,tablet,tablet,75,mg,NA,NA,,Solriamfetol 75mg tablets
-38932011000001100,Solriamfetol 150mg tablets,38925611000001100,Solriamfetol,385055001,Tablet,1,Discrete,1,tablet,tablet,150,mg,NA,NA,,Solriamfetol 150mg tablets
