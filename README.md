@@ -2,10 +2,10 @@
 Investigation of medicines used in Primary (English Prescribing Data) care & secondary (Secondary Care Medicines Data) care to treat narcolepsy
 
 Description of R scripts:
-  - "OctGitHubFinal.R" - Data cleaning + analysis of secondary care data (SCMD). Largely adapated from initial code provided by DataLab team
-  - "OctGitMapping.R" - Incoporation of SCMD with geographic data to plot volumes of DDDs per ICB on map of ICBs + using separate data frames
-  - "OctGitPrimaryCare.R" - Data Cleaning + creating maps for primary care (English prescribing data) mapped to ICB regions
-  - "OctGitHubPrimaryReformatCode.R" - Data Cleaning/Reformatting primary care data to facilitate create equivalent plots to secondary care plots (National 3 monthly rolling average, volumes per geographic region, Top ICBs prescribing)
+  - 'scripts/OctGitHubFinal.R' - Data cleaning + analysis of secondary care data (SCMD). Largely adapated from initial code provided by DataLab team
+  - 'scripts/OctGitMapping.R' - Incoporation of SCMD with geographic data to plot volumes of DDDs per ICB on map of ICBs + using separate data frames
+  - 'scripts/OctGitPrimaryCare.R' - Data Cleaning + creating maps for primary care (English prescribing data) mapped to ICB regions
+  - 'scripts/OctGitHubPrimaryReformatCode.R' - Data Cleaning/Reformatting primary care data to facilitate create equivalent plots to secondary care plots (National 3 monthly rolling average, volumes per geographic region, Top ICBs prescribing)
 
 Description of Datasets:
 Raw data (.csv):
