@@ -33,12 +33,9 @@ PriOX[ , c('POSTCODE',
            'REGIONAL_OFFICE_NAME',
            'QUANTITY')] <- list(NULL)
 
-# PriOX <- PriOX %>%
-#   rename("ICB_CODE" = "ICB_CODE.y",
-#          "ICB_NAME" = "ICB_NAME.y")
-
 ## Filter out  Practices which don't have STP/ICB code due to incorrect practice codes in EPD 
 # 4010 months -> 3862 (148 months prescribing data lost - 3.69%)
+
 PriOX <- PriOX %>%
   filter(!is.na(ICB_NAME))
 
