@@ -19,55 +19,7 @@ MapData <- read.csv(here("data/MappingOxybate.csv"))
 
 Oxybate4year <- left_join(ICS, MapData, by = "ICB22NM")
 
-#test 1
-ggplot(data = ICS) +
-  geom_sf(aes(fill = OxybateMap$volume_ddd)) +
-  scale_fill_viridis_c(option = 'plasma', trans = 'sqrt')
-
-## test 2
-# Limits to ensure NA values appear correctly 
-
-ggplot(data = ICS) +
-  geom_sf(aes(fill = OxybateMap$volume_ddd)) +
-  coord_sf(datum = NA) +
-  scale_fill_gradient(name = "Sodium Oxybate(DDDs)", 
-                      high = "red",
-                      low = "yellow",
-                      na.value = "#f2f0f0",
-                      limits = factor(12, 99000)
-  ) + 
-  theme_bw() + 
-  theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank(),
-    legend.position = c(0.1,0.8),
-  )
-
-
-##Final plot - Jan'19 - Dec '22
-ggplot(data = ICS) +
-  ggtitle("Regional Sodium Oxybate Prescribing 2019-2022") +
-  geom_sf(aes(fill = Oxybate4year$volume_ddd)) +
-  coord_sf(datum = NA) +
-  scale_fill_gradient(name = "Sodium Oxybate(DDDs)", 
-                      high = "red",
-                      low = "yellow",
-                      na.value = "#f2f0f0",
-                      limits = c(12, 99000),
-                      #trans = 'log'
-  ) + 
-  theme_bw() + 
-  theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank(),
-    legend.position = c(0.1,0.8)
-  )
-
-## what does cgpt think
+## Final Edit for plot
 
 OxybateMap <-
   ggplot(data = ICS) +
@@ -156,18 +108,8 @@ SolriamfetolMap <- ggplot(data = ICS) +
     legend.position = c(0.1, 0.8)
   )
 
-### arrange into one figure
-
-# p20 <- OxybateMap
-# p21 <- PitolisantMap
-# p22 <- SolriamfetolMap
-# 
-# p20|p21|p22
-
-
-
 ###### Yearly data sets #######
-
+# Can be duplicated for each drug
 ### 2019
 #import Oxybate 2019 data
 
@@ -223,30 +165,3 @@ SolriamfetolMap <- ggplot(data = ICS) +
 #     legend.position = c(0.1,0.8)
 #   ) 
 
-######### Integrate Population Data?
-# Not included in final paper - ICB population data not included but available from ONS (2021 census)
-# population <- read.csv("here/data/MappingPopulation.csv")
-# 
-# OxyICSPop <- left_join(Oxybate4year, population, by = 'ICB22NM')
-# 
-# OxyICSPop$DDD100k <- (OxyICSPop$volume_ddd / OxyICSPop$Population) * 100000
-# 
-# ## plot data per population
-# 
-# ggplot(data = ICS) +
-#   geom_sf(aes(fill = OxyICSPop$DDD100k)) +
-#   coord_sf(datum = NA) +
-#   scale_fill_gradient(name = "DDDs per 100,000 persons", 
-#                       high = "red",
-#                       low = "yellow",
-#                       na.value = "#f2f0f0",
-#                       limits = c(12, 6000),
-#                       trans ='log')+ 
-#   theme_bw() + 
-#   theme(
-#     plot.background = element_blank(),
-#     panel.grid.major = element_blank(),
-#     panel.grid.minor = element_blank(),
-#     panel.border = element_blank(),
-#     legend.position = c(0.1,0.8)
-#   ) 
